@@ -53,7 +53,7 @@ close_values = [20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 2
 r_close_values = robjects.FloatVector(close_values)
 res = r_f(r_close_values)
 
-print(res)
+print(float(res[0]))
 
 
 

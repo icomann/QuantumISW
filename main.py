@@ -90,7 +90,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
-        volatilidad = self.volatilidad_anual(close_values) #calculo volatilidad
+        volatilidad = self.volatilidad_anual_R(close_values) #calculo volatilidad
 
         ans_string = '{0:0.6f}'.format(volatilidad)
         self.result.setText(ans_string) #muestra resultado
@@ -171,9 +171,9 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         r_f = robjects.r['f']
 
         r_close_values = robjects.FloatVector(close_values)
-        res = r_f(r_close_values)
+        ret = r_f(r_close_values)
 
-        return res
+        return float(ret[0])
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
