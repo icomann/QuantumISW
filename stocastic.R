@@ -14,16 +14,14 @@ volatilidad <- desviacion * sqrt(tau)
 
 Time_mature <- 0.5
 
-t = 0
-
 set.seed(112358)
 
 s0 <- 42 #precio de la acción hoy
 r <- 0.1 #tasa interés libre de riesgo
 
-lensimula <- 20000 #numero simulaciones
+lensimula <- 1000 #numero simulaciones
 
-generator = rnorm(lensimula, mean = 0, sd= 1) #generador numeros aleatorios distribucion normal
+generator = rnorm(lensimula, mean = 0, sd= 1) #Genera lista con numeros aleatorios usando distribucion normal
 
 esp <- c()
 

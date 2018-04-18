@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import shutil 
+import shutil
+
 from PyQt4 import QtGui, QtCore, uic
 import rpy2.robjects as robjects
 import numpy
@@ -11,7 +12,7 @@ import fix_yahoo_finance as yf
 from math import *
 import rpy2.robjects.numpy2ri
 
-rpy2.robjects.numpy2ri.activate() #Convierte objetos numpy en objetos R 
+rpy2.robjects.numpy2ri.activate() #Convierte objetos numpy en objetos R
 
 qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigner
 
@@ -58,15 +59,15 @@ r = robjects.r # Con r llamamos a una funcion de R, por ejemplo: r.mean()
 # 	mw = QDataViewer()
 # 	mw.show()
 # 	sys.exit(app.exec_())
-  
+
 # if __name__ == '__main__':
 # 	window()
 
 
- 
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
- 
-class MyApp(QtGui.QMainWindow, Ui_MainWindow): 
+
+class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         #Todo lo necesario para la inicializacion
@@ -83,19 +84,17 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         temp_var2 = self.finish_date.date() #get finish date
         finish_date = (temp_var2.toPyDate()).strftime("%Y-%m-%d") #formato finish date
         r_value = float(self.r_value.toPlainText()) #get r
-        
-
 
         filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
 
-        close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista    
+        close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
         volatilidad = self.volatilidad_anual(close_values) #calculo volatilidad
 
         ans_string = '{0:0.6f}'.format(volatilidad)
         self.result.setText(ans_string) #muestra resultado
-   
+
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
         #Inicializa llamada al servidor
         yf.pdr_override()
@@ -123,10 +122,61 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         tau = 252  #Factor para Volatilidad anual
         volatilidad = desviacion[0]* sqrt(tau)
         return volatilidad
-     
+
+    def volatilidad_anual_R(self, close_values):
+        robjects.r("""
+                f <- function(close_values, verbose=FALSE){
+                    if(verbose) {
+                        cat("I am calling f().\n")
+                    }
+                    mu_values <- c()
+                    for (i in 2:length(close_values)){
+                      mu_values <- append(mu_values, (log(close_values[i] / close_values[i-1])))
+                    }
+
+                    promedio <- mean(mu_values)
+                    desviacion <- sd(mu_values)
+
+                    tau <- 252  #Factor para Volatilidad anual
+
+                    volatilidad <- desviacion * sqrt(tau)
+
+                    Time_mature <- 0.5
+
+                    #set.seed(112358)
+
+                    s0 <- 42 #precio de la acción hoy
+                    r <- 0.1 #tasa interés libre de riesgo
+
+                    lensimula <- 1000 #numero simulaciones
+
+                    generator <- rnorm(lensimula, mean = 0, sd= 1) #Genera lista con numeros aleatorios usando distribucion normal
+
+                    esp <- c()
+
+                    #Generación de curvas S_t
+                    for (i in 1:lensimula){
+                      st <- s0*exp((r- (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
+                      esp <- append(esp,st)
+                    }
+
+
+                    promesp <- mean(esp)
+                    Ftx <- exp(-1*r*(Time_mature))*promesp #resultado final
+                    return(Ftx)
+                }
+
+        """)
+
+        r_f = robjects.r['f']
+
+        r_close_values = robjects.FloatVector(close_values)
+        res = r_f(r_close_values)
+
+        return res
+
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     window = MyApp()
     window.show()
     sys.exit(app.exec_())
-
