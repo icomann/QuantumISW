@@ -4,5 +4,8 @@
 
 1. El sistema logra descargar datos usando fix-yahoo-finance, pero suele caerse, se hace necesaria la importación de archivos.
 2. El consultor ingresa T(tiempo de madurez), los datos históricos son de acuerdo a ese T. Por ejemplo, el consultor coloca T= 6 meses, habra que descargar 6 meses de datos históricos para calcular volatilidad.
-3. Falta generar datos aleatorios (Codigo comentado)
-4. Falta implementar la simulación (Ver archivo stochastic.r)
+3. Ejecución, por mientras:
+
+```
+python3 main.py
+```
