@@ -101,6 +101,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
         volatilidad = self.fvolatilidad(close_values) #calculo volatilidad
+        #volatilidad = 0.2
 
         call = self.Call(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
         #put = self.Put(volatilidad, r, k, Time_mature)   #Llamada a venta
@@ -139,11 +140,12 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
 
                 esp <- c()
+                
 
                 #Generación de curvas S_t
                 for (i in 1:lensimula){
                   st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(st-k, 0))
+                  esp <- append(esp,max(0.0,st-k))
                 }
 
                 promesp <- mean(esp)
@@ -177,7 +179,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 #Generación de curvas S_t
                 for (i in 1:lensimula){
                   st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(k-st, 0))
+                  esp <- append(esp,max(0.0,k-st))
                 }
 
                 promesp <- mean(esp)
