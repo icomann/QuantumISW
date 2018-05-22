@@ -74,10 +74,22 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         QtGui.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
+
+        comboBox = self.business_type_combo
+        comboBox.addItem(QtGui.QIcon("rsc/call.png"),"Compra")
+        comboBox.addItem(QtGui.QIcon("rsc/put.png"),"Venta")
+
+        comboBoxType = self.Option_type
+        comboBoxType.addItem(QtGui.QIcon("rsc/american_option.png"),"Americana")
+        comboBoxType.addItem(QtGui.QIcon("rsc/european_option.png"),"Europea")
+        
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
 
     def result_function(self):
+        zone = self.business_type_combo.currentText()
+        option = self.Option_type.currentText()
+
         stock_symbol = self.stock_name.toPlainText() #get symbol
 
         temp_var = self.start_date.date() #get start date
@@ -91,9 +103,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         r = float(self.r_value.toPlainText()) #get r
 
-        #combo = self.business_type_combo.QComboBox() #Compra/Venta
-        #combo.addItem("Compra")
-        #combo.addItem("Venta")
 
         filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
 
@@ -102,11 +111,18 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         volatilidad = self.fvolatilidad(close_values) #calculo volatilidad
         #volatilidad = 0.2
+        
+        if zone=="Europea":
+            if option=="Compra":
+                result = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
+            else:
+                result = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
+        
+            ans_string = '{0:0.6f}'.format(result)
+            self.result.setText(ans_string) #muestra resultado
 
-        call = self.Call(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
-        #put = self.Put(volatilidad, r, k, Time_mature)   #Llamada a venta
-        ans_string = '{0:0.6f}'.format(call)
-        self.result.setText(ans_string) #muestra resultado
+        elif zone=="Americana":
+            print("En desarrollo")
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
         #Inicializa llamada al servidor
@@ -127,7 +143,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         return close
 
 
-    def Call(self, volatilidad, r, k, Time_mature, close_values):
+    def europeanCall(self, volatilidad, r, k, Time_mature, close_values):
         robjects.r("""
             f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
                 if(verbose) {
@@ -162,7 +178,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         return float(put_call[0])
 
 
-    def Put(self, volatilidad, r, k, Time_mature, close_values):
+    def europeanPut(self, volatilidad, r, k, Time_mature, close_values):
         robjects.r("""
             f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
                 if(verbose) {

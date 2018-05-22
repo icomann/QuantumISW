@@ -102,7 +102,7 @@
      <rect>
       <x>233</x>
       <y>310</y>
-      <width>91</width>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
@@ -138,7 +138,7 @@
      <rect>
       <x>230</x>
       <y>490</y>
-      <width>131</width>
+      <width>101</width>
       <height>31</height>
      </rect>
     </property>
@@ -174,7 +174,7 @@
      <rect>
       <x>233</x>
       <y>430</y>
-      <width>91</width>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
@@ -184,7 +184,7 @@
      <rect>
       <x>233</x>
       <y>370</y>
-      <width>91</width>
+      <width>101</width>
       <height>41</height>
      </rect>
     </property>
@@ -207,7 +207,7 @@
      <rect>
       <x>230</x>
       <y>140</y>
-      <width>85</width>
+      <width>131</width>
       <height>27</height>
      </rect>
     </property>
@@ -230,7 +230,7 @@
      <rect>
       <x>230</x>
       <y>90</y>
-      <width>85</width>
+      <width>131</width>
       <height>27</height>
      </rect>
     </property>
@@ -246,6 +246,19 @@
     </property>
     <property name="text">
      <string>Tipo de opcion</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>490</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>/ acción</string>
     </property>
    </widget>
   </widget>
