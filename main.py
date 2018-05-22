@@ -87,8 +87,8 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.calculate_option.clicked.connect(self.result_function)
 
     def result_function(self):
-        zone = self.business_type_combo.currentText()
-        option = self.Option_type.currentText()
+        option = self.business_type_combo.currentText()
+        zone = self.Option_type.currentText()
 
         stock_symbol = self.stock_name.toPlainText() #get symbol
 
@@ -114,12 +114,14 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         if zone=="Europea":
             if option=="Compra":
-                result = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
-            else:
-                result = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
-        
-            ans_string = '{0:0.6f}'.format(result)
-            self.result.setText(ans_string) #muestra resultado
+                resultado = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
+                ans_string = '{0:0.6f}'.format(resultado)
+                self.result.setText(ans_string) #muestra resultado
+            elif option=="Venta":
+                resultado = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
+                ans_string = '{0:0.6f}'.format(resultado)
+                self.result.setText(ans_string) #muestra resultado
+
 
         elif zone=="Americana":
             print("En desarrollo")
@@ -208,7 +210,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         r_close_values = robjects.FloatVector(close_values)
         put_sim = r_f(volatilidad, r, k, Time_mature, r_close_values)
-
         return float(put_sim[0])
 
 
