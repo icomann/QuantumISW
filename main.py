@@ -4,21 +4,15 @@ import os
 import shutil
 
 from PyQt4 import QtGui, QtCore, uic
-import rpy2.robjects as robjects
 import numpy
 import pandas
 from pandas_datareader import data as pdr
 import fix_yahoo_finance as yf
 from math import *
-import rpy2.robjects.numpy2ri
-
-rpy2.robjects.numpy2ri.activate() #Convierte objetos numpy en objetos R
+import rwrapper
+import rpy2.robjects as robjects
 
 qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigner
-
-r = robjects.r # Con r llamamos a una funcion de R, por ejemplo: r.mean()
-
-
 
 # jugar para obtener valores aleatorios
 #robjects.r('set.seed(42)')
@@ -86,6 +80,9 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
 
+        self.R = RWrapper()
+        self.R.load_source("europe.r")
+
     def result_function(self):
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
@@ -143,94 +140,20 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         return close
 
     def europeanCall(self, volatilidad, r, k, Time_mature, close_values):
-        robjects.r("""
-            f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling Call().\n")
-                }
-                s0 <- close_values[-1] #precio de la acción hoy
-
-                lensimula <- 1000 #numero simulaciones
-
-                generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
-
-                esp <- c()
-                
-
-                #Generación de curvas S_t
-                for (i in 1:lensimula){
-                  st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(0.0,st-k))
-                }
-
-                promesp <- mean(esp)
-                Ftx <- exp(-1*r*(Time_mature))*promesp #resultado final
-                return(Ftx)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
         r_close_values = robjects.FloatVector(close_values)
-        put_call = r_f(volatilidad, r, k, Time_mature, r_close_values)
+        put_call = self.R.call("europeanCall")(volatilidad, r, k, Time_mature, r_close_values)
 
         return float(put_call[0])
 
 
     def europeanPut(self, volatilidad, r, k, Time_mature, close_values):
-        robjects.r("""
-            f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling Put().\n")
-                }
-                s0 <- close_values[-1] #precio de la acción hoy
-
-                lensimula <- 1000 #numero simulaciones
-
-                generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
-
-                esp <- c()
-
-                #Generación de curvas S_t
-                for (i in 1:lensimula){
-                  st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(0.0,k-st))
-                }
-
-                promesp <- mean(esp)
-                Ftx <- exp(-1*r*(Time_mature))*promesp #resultado final
-                return(Ftx)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
         r_close_values = robjects.FloatVector(close_values)
-        put_sim = r_f(volatilidad, r, k, Time_mature, r_close_values)
+        put_sim = self.R.call("europeanPut")(volatilidad, r, k, Time_mature, r_close_values)
+
         return float(put_sim[0])
 
 
     def fvolatilidad(self, close_values):
-        robjects.r("""
-            f <- function(close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling simulation().\n")
-                }
-                mu_values <- c()
-                for (i in 2:length(close_values)){
-                  mu_values <- append(mu_values, (log(close_values[i] / close_values[i-1])))
-                }
-
-                desviacion <- sd(mu_values)
-                tau <- 252  #Factor para Volatilidad anual
-                volatilidad <- desviacion * sqrt(tau)
-
-                return(volatilidad)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
         r_close_values = robjects.FloatVector(close_values)
         ret = r_f(r_close_values)
 
