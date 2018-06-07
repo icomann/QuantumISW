@@ -114,17 +114,15 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         if zone=="Europea":
             if option=="Compra":
-                resultado = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
-                ans_string = '{0:0.6f}'.format(resultado)
-                self.result.setText(ans_string) #muestra resultado
+                option_func = self.europeanCall
             elif option=="Venta":
-                resultado = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
-                ans_string = '{0:0.6f}'.format(resultado)
-                self.result.setText(ans_string) #muestra resultado
-
+                option_func = self.europeanPut
 
         elif zone=="Americana":
             print("En desarrollo")
+
+        self.result.setText('{0:0.6f}'.format(option_func(volatilidad, r, k, Time_mature,close_values)))
+
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
         #Inicializa llamada al servidor
@@ -143,7 +141,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         close = data.Close.tolist()
         close = close[1:]
         return close
-
 
     def europeanCall(self, volatilidad, r, k, Time_mature, close_values):
         robjects.r("""
