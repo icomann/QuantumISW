@@ -13,6 +13,7 @@ import rwrapper
 import rpy2.robjects as robjects
 
 qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigner
+R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
 
 # jugar para obtener valores aleatorios
 #robjects.r('set.seed(42)')
@@ -57,8 +58,6 @@ qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigne
 # if __name__ == '__main__':
 # 	window()
 
-
-
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MyApp(QtGui.QMainWindow, Ui_MainWindow):
@@ -80,9 +79,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
 
-        self.R = RWrapper()
-        self.R.load_source("europe.r")
-
     def result_function(self):
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
@@ -100,8 +96,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         r = float(self.r_value.toPlainText()) #get r
 
-
-        filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
+        try:
+            filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
+        except:
+            self.result.setText("ERROR CARGA DATOS")
+            return
 
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
@@ -111,14 +110,17 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         if zone=="Europea":
             if option=="Compra":
-                option_func = self.europeanCall
+                option_func = "europeanCall"
             elif option=="Venta":
-                option_func = self.europeanPut
-
+                option_func = "europeanPut"
         elif zone=="Americana":
-            print("En desarrollo")
+            if option=="Compra":
+                option_func = "americanCall"
+            elif option=="Venta":
+                option_func = "americanPut"
 
-        self.result.setText('{0:0.6f}'.format(option_func(volatilidad, r, k, Time_mature,close_values)))
+        #Linea bestia que llama la funcion y la chanta en result
+        self.result.setText('{0:0.6f}'.format(R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]))
 
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
@@ -139,23 +141,8 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         close = close[1:]
         return close
 
-    def europeanCall(self, volatilidad, r, k, Time_mature, close_values):
-        r_close_values = robjects.FloatVector(close_values)
-        put_call = self.R.call("europeanCall")(volatilidad, r, k, Time_mature, r_close_values)
-
-        return float(put_call[0])
-
-
-    def europeanPut(self, volatilidad, r, k, Time_mature, close_values):
-        r_close_values = robjects.FloatVector(close_values)
-        put_sim = self.R.call("europeanPut")(volatilidad, r, k, Time_mature, r_close_values)
-
-        return float(put_sim[0])
-
-
     def fvolatilidad(self, close_values):
-        r_close_values = robjects.FloatVector(close_values)
-        ret = r_f(r_close_values)
+        ret = R.call("volatilidad")(R.vectorize(close_values))
 
         return float(ret[0])
 
