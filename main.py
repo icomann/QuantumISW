@@ -78,8 +78,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
+        self.reload.clicked.connect(self.reload_sources)
 
     def reload_sources(self):
+        R.load_source("murica.R");
 
     def result_function(self):
         option = self.business_type_combo.currentText()

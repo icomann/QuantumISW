@@ -264,6 +264,19 @@
      <string>/ acción</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="reload">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>40</y>
+      <width>141</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Recargar murica.R</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
