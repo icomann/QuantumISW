@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../Pictures/barcoS.jpg</normaloff>../../../../Pictures/barcoS.jpg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextEdit" name="stock_name">
     <property name="geometry">
@@ -277,6 +281,29 @@
      <string>Recargar murica.R</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="plot_button">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>140</y>
+      <width>99</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Graficar</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_plot" native="true">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>190</y>
+      <width>191</width>
+      <height>181</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -284,7 +311,7 @@
      <x>0</x>
      <y>0</y>
      <width>586</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

@@ -10,11 +10,11 @@ from pandas_datareader import data as pdr
 import fix_yahoo_finance as yf
 from math import *
 import rwrapper
+import graficos
 import rpy2.robjects as robjects
 
 qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigner
 R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
-
 # jugar para obtener valores aleatorios
 #robjects.r('set.seed(42)')
 # r = robjects.r
@@ -78,10 +78,15 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
-        self.reload.clicked.connect(self.reload_sources)
 
-    def reload_sources(self):
-        R.load_source("murica.R");
+        #Graficar
+        self.plot_space = self.widget_plot
+        self.grid = QtGui.QGridLayout(self.plot_space)
+        self.setLayout(self.grid)
+        self.G = graficos.Grafico(self.grid)
+        self.plot_button.clicked.connect(self.G.show)
+
+        
 
     def result_function(self):
         option = self.business_type_combo.currentText()
@@ -106,9 +111,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
             self.result.setText("ERROR CARGA DATOS")
             return
 
-        close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
-        #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
-
+        close_values, fecha = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
+        #close_values[0] = [20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
+        #close_values[1]: fechas para el grafico
+        
         volatilidad = self.fvolatilidad(close_values) #calculo volatilidad
         #volatilidad = 0.2
         
@@ -142,8 +148,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         colnames = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
         data = pandas.read_csv(file, names=colnames)
         close = data.Close.tolist()
+        fechas = data.Date.tolist()
         close = close[1:]
-        return close
+        fechas = fechas[1:]
+        return close,fechas
 
     def fvolatilidad(self, close_values):
         ret = R.call("volatilidad")(R.vectorize(close_values))
