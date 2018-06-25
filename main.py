@@ -111,9 +111,9 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
             self.result.setText("ERROR CARGA DATOS")
             return
 
-        close_values, fecha = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
+        close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values[0] = [20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
-        #close_values[1]: fechas para el grafico
+        
         
         volatilidad = self.fvolatilidad(close_values) #calculo volatilidad
         #volatilidad = 0.2
@@ -129,9 +129,12 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
             elif option=="Venta":
                 option_func = "americanPut"
 
-        #Linea bestia que llama la funcion y la chanta en result
-        self.result.setText('{0:0.6f}'.format(R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]))
+        #Esta linea llama la funcion y el resultado lo chanta en result
+        res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
+        self.result.setText('{0:0.6f}'.format(res_numerico))
 
+        plot_values = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[1:]
+        self.G.show(Time_mature, plot_values)
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
         #Inicializa llamada al servidor
@@ -148,10 +151,8 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         colnames = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
         data = pandas.read_csv(file, names=colnames)
         close = data.Close.tolist()
-        fechas = data.Date.tolist()
         close = close[1:]
-        fechas = fechas[1:]
-        return close,fechas
+        return close
 
     def fvolatilidad(self, close_values):
         ret = R.call("volatilidad")(R.vectorize(close_values))
