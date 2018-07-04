@@ -4,6 +4,9 @@ import os
 import shutil
 
 from PyQt4 import QtGui, QtCore, uic
+
+
+
 import rpy2.robjects as robjects
 import numpy
 import pandas
@@ -12,9 +15,19 @@ import fix_yahoo_finance as yf
 from math import *
 import rpy2.robjects.numpy2ri
 
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+import matplotlib.pyplot as plt
+
+
+
+
+
+import random
+
 rpy2.robjects.numpy2ri.activate() #Convierte objetos numpy en objetos R
 
-qtCreatorFile = "SIMPLE_GUI.ui" # Enter file here. #Interfaz hecha con QTDesigner
+qtCreatorFile = "sample3.ui" # Enter file here. #Interfaz hecha con QTDesigner
 
 r = robjects.r # Con r llamamos a una funcion de R, por ejemplo: r.mean()
 
@@ -75,6 +88,12 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
+        
+        self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))  
+    
+
+
+
         comboBox = self.business_type_combo
         comboBox.addItem(QtGui.QIcon("rsc/call.png"),"Compra")
         comboBox.addItem(QtGui.QIcon("rsc/put.png"),"Venta")
@@ -86,22 +105,32 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
 
+
+        
+        #Graficar
+        
+
+
     def result_function(self):
+
+        
+
+
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
 
-        stock_symbol = self.stock_name.toPlainText() #get symbol
+        stock_symbol = self.stock_name.text() #get symbol
 
         temp_var = self.start_date.date() #get start date
         start_date = (temp_var.toPyDate()).strftime("%Y-%m-%d") #formato start date
         temp_var2 = self.finish_date.date() #get finish date
         finish_date = (temp_var2.toPyDate()).strftime("%Y-%m-%d") #formato finish date
 
-        Time_mature = float(self.Time_mature_name.toPlainText()) #tiempo de madurez
+        Time_mature = float(self.Time_mature_name.text()) #tiempo de madurez
 
-        k = float(self.k_value.toPlainText()) #get k
+        k = float(self.k_value.text()) #get k
 
-        r = float(self.r_value.toPlainText()) #get r
+        r = float(self.r_value.text()) #get r
 
 
         filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
@@ -117,14 +146,18 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 resultado = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
                 ans_string = '{0:0.6f}'.format(resultado)
                 self.result.setText(ans_string) #muestra resultado
+
             elif option=="Venta":
                 resultado = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
                 ans_string = '{0:0.6f}'.format(resultado)
                 self.result.setText(ans_string) #muestra resultado
-
+                
 
         elif zone=="Americana":
             print("En desarrollo")
+
+        self.stackedWidget.setCurrentIndex(2)
+       
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
         #Inicializa llamada al servidor
@@ -238,6 +271,26 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         ret = r_f(r_close_values)
 
         return float(ret[0])
+
+    def plot(self):
+        ''' plot some random stuff '''
+        data = [random.random() for i in range(25)]
+        ax = self.figure.add_subplot(111)
+        ax.hold(False)
+        ax.plot(data, '*-')
+        self.canvas.draw()
+
+
+
+class ControlMainWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        super(ControlMainWindow, self).__init__(parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
+              
+
+
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

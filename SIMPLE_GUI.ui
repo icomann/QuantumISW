@@ -13,37 +13,226 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextEdit" name="stock_name">
+   <widget class="QPushButton" name="calculate_option">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>30</y>
-      <width>111</width>
-      <height>41</height>
+      <x>680</x>
+      <y>430</y>
+      <width>99</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Calcular</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="result">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>430</y>
+      <width>101</width>
+      <height>31</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>131</width>
+      <x>410</x>
+      <y>440</y>
+      <width>91</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Acción (Símbolo)</string>
+     <string>Resultado</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>430</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>/ acción</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>68</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;EMPRESA&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>251</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;DESCARGA DE DATOS HISTÓRICOS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>170</y>
+      <width>311</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;SUBIDA DE DATOS HISTÓRICOS (OPCIONAL)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>210</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Subir Archivo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>801</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/background/back4.jpg);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>249</y>
+      <width>100</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Fecha Término&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>391</y>
+      <width>136</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Tiempo de madurez&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="Time_mature_name">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>391</y>
+      <width>109</width>
+      <height>29</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>356</y>
+      <width>129</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Precio del Ejercicio&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="k_value">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>356</y>
+      <width>109</width>
+      <height>29</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="r_value">
+    <property name="geometry">
+     <rect>
+      <x>261</x>
+      <y>321</y>
+      <width>109</width>
+      <height>29</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="finish_date">
+    <property name="geometry">
+     <rect>
+      <x>181</x>
+      <y>262</y>
+      <width>97</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="date">
+     <date>
+      <year>2018</year>
+      <month>4</month>
+      <day>16</day>
+     </date>
     </property>
    </widget>
    <widget class="QDateEdit" name="start_date">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>190</y>
-      <width>110</width>
-      <height>41</height>
+      <x>181</x>
+      <y>210</y>
+      <width>97</width>
+      <height>27</height>
      </rect>
     </property>
     <property name="date">
@@ -57,210 +246,166 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>200</y>
-      <width>91</width>
+      <x>21</x>
+      <y>201</y>
+      <width>80</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Fecha inicio</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>260</y>
-      <width>101</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Fecha Término</string>
-    </property>
-   </widget>
-   <widget class="QDateEdit" name="finish_date">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>250</y>
-      <width>110</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="date">
-     <date>
-      <year>2018</year>
-      <month>4</month>
-      <day>16</day>
-     </date>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="r_value">
-    <property name="geometry">
-     <rect>
-      <x>233</x>
-      <y>310</y>
-      <width>101</width>
-      <height>41</height>
-     </rect>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Fecha inicio&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>320</y>
-      <width>211</width>
+      <x>21</x>
+      <y>321</y>
+      <width>204</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Tasa de interés libre de riesgo</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="calculate_option">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>490</y>
-      <width>99</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Calcular</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="result">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>490</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>500</y>
-      <width>91</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Resultado</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>440</y>
-      <width>151</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Tiempo de madurez</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="Time_mature_name">
-    <property name="geometry">
-     <rect>
-      <x>233</x>
-      <y>430</y>
-      <width>101</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPlainTextEdit" name="k_value">
-    <property name="geometry">
-     <rect>
-      <x>233</x>
-      <y>370</y>
-      <width>101</width>
-      <height>41</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>380</y>
-      <width>131</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Precio del Ejercicio</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="business_type_combo">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>140</y>
-      <width>131</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>140</y>
-      <width>101</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Compra/Venta</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="Option_type">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>90</y>
-      <width>131</width>
-      <height>27</height>
-     </rect>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Tasa de interés libre de riesgo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>101</width>
+      <x>450</x>
+      <y>97</y>
+      <width>100</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Tipo de opcion</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Tipo de opcion&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_10">
+   <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>490</y>
-      <width>81</width>
-      <height>31</height>
+      <x>450</x>
+      <y>54</y>
+      <width>99</width>
+      <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>/ acción</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Compra/Venta&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="Option_type">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>50</y>
+      <width>131</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="business_type_combo">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>89</y>
+      <width>131</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="stock_name">
+    <property name="geometry">
+     <rect>
+      <x>201</x>
+      <y>84</y>
+      <width>189</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="autoFormatting">
+     <set>QTextEdit::AutoNone</set>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="business_name">
+    <property name="geometry">
+     <rect>
+      <x>201</x>
+      <y>41</y>
+      <width>189</width>
+      <height>37</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>50</y>
+      <width>57</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>90</y>
+      <width>139</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Símbolo de Empresa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <zorder>label_11</zorder>
+   <zorder>label_9</zorder>
+   <zorder>calculate_option</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_12</zorder>
+   <zorder>label_6</zorder>
+   <zorder>label_10</zorder>
+   <zorder>Time_mature_name</zorder>
+   <zorder>business_type_combo</zorder>
+   <zorder>label_17</zorder>
+   <zorder>label_7</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>label_13</zorder>
+   <zorder>stock_name</zorder>
+   <zorder>label_5</zorder>
+   <zorder>label_8</zorder>
+   <zorder>k_value</zorder>
+   <zorder>r_value</zorder>
+   <zorder>label_14</zorder>
+   <zorder>finish_date</zorder>
+   <zorder>start_date</zorder>
+   <zorder>business_name</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label</zorder>
+   <zorder>Option_type</zorder>
+   <zorder>result</zorder>
+   <zorder>label_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -272,8 +417,9 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="rsc.qrc"/>
+ </resources>
  <connections/>
 </ui>
