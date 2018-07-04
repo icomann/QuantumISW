@@ -6,15 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>816</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../Pictures/barcoS.jpg</normaloff>../../../../Pictures/barcoS.jpg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="calculate_option">
@@ -108,36 +109,14 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>210</y>
+      <x>620</x>
+      <y>220</y>
       <width>111</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
      <string>Subir Archivo</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>801</width>
-      <height>621</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>ArrowCursor</cursorShape>
-    </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(:/background/back4.jpg);</string>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -166,7 +145,10 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Tiempo de madurez&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="Time_mature_name">
+   <widget class="QTextEdit" name="result">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>261</x>
@@ -379,47 +361,54 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Símbolo de Empresa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <zorder>label_11</zorder>
-   <zorder>label_9</zorder>
-   <zorder>calculate_option</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label_12</zorder>
-   <zorder>label_6</zorder>
-   <zorder>label_10</zorder>
-   <zorder>Time_mature_name</zorder>
-   <zorder>business_type_combo</zorder>
-   <zorder>label_17</zorder>
-   <zorder>label_7</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>label_13</zorder>
-   <zorder>stock_name</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_8</zorder>
-   <zorder>k_value</zorder>
-   <zorder>r_value</zorder>
-   <zorder>label_14</zorder>
-   <zorder>finish_date</zorder>
-   <zorder>start_date</zorder>
-   <zorder>business_name</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label</zorder>
-   <zorder>Option_type</zorder>
-   <zorder>result</zorder>
-   <zorder>label_4</zorder>
+   <widget class="QPushButton" name="reload">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>40</y>
+      <width>141</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Recargar murica.R</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="plot_button">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>140</y>
+      <width>99</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Graficar</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="widget_plot" native="true">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>190</y>
+      <width>191</width>
+      <height>181</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>816</width>
      <height>25</height>
     </rect>
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="rsc.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

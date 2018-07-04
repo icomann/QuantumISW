@@ -11,7 +11,6 @@ class Grafico():
 
 
 	def show(self,time,close):
-		print("(zaz)")
 		self.x = np.linspace(0, time, num=len(close))
 		self.y = close
 
@@ -22,4 +21,7 @@ class Grafico():
 		plt.xlabel("tiempo [t(?)]")
 		plt.ylabel("ganancia[$(?)]")
 		plt.tight_layout()
-self.canvas.draw()
+
+		self.canvas.draw()
+
+

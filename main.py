@@ -19,17 +19,11 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 
-
-
-
-
+import rwrapper
 import random
 
-rpy2.robjects.numpy2ri.activate() #Convierte objetos numpy en objetos R
-
 qtCreatorFile = "sample3.ui" # Enter file here. #Interfaz hecha con QTDesigner
-
-r = robjects.r # Con r llamamos a una funcion de R, por ejemplo: r.mean()
+R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
 
 
 
@@ -92,8 +86,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))  
     
 
-
-
         comboBox = self.business_type_combo
         comboBox.addItem(QtGui.QIcon("rsc/call.png"),"Compra")
         comboBox.addItem(QtGui.QIcon("rsc/put.png"),"Venta")
@@ -106,15 +98,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.calculate_option.clicked.connect(self.result_function)
 
 
-        
-        #Graficar
-        
-
+ 
 
     def result_function(self):
 
-        
-
+    
 
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
@@ -133,8 +121,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         r = float(self.r_value.text()) #get r
 
 
-        filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
-
+        try:
+            filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
+        except:
+            self.result.setText("ERROR CARGA DATOS")
+            return
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
@@ -143,18 +134,20 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         if zone=="Europea":
             if option=="Compra":
-                resultado = self.europeanCall(volatilidad, r, k, Time_mature, close_values) #Llamada a compra
-                ans_string = '{0:0.6f}'.format(resultado)
-                self.result.setText(ans_string) #muestra resultado
 
+                option_func = "europeanCall"
             elif option=="Venta":
-                resultado = self.europeanPut(volatilidad, r, k, Time_mature,close_values)   #Llamada a venta
-                ans_string = '{0:0.6f}'.format(resultado)
-                self.result.setText(ans_string) #muestra resultado
-                
-
+                option_func = "europeanPut"
         elif zone=="Americana":
-            print("En desarrollo")
+            if option=="Compra":
+                option_func = "americanCall"
+            elif option=="Venta":
+                option_func = "americanPut"
+
+        #Esta linea llama la funcion y el resultado lo chanta en result
+        
+        res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
+        self.result.setText('{0:0.6f}'.format(res_numerico))
 
         self.stackedWidget.setCurrentIndex(2)
        
@@ -178,119 +171,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         return close
 
 
-    def europeanCall(self, volatilidad, r, k, Time_mature, close_values):
-        robjects.r("""
-            f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling Call().\n")
-                }
-                s0 <- close_values[-1] #precio de la acción hoy
-
-                lensimula <- 1000 #numero simulaciones
-
-                generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
-
-                esp <- c()
-                
-
-                #Generación de curvas S_t
-                for (i in 1:lensimula){
-                  st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(0.0,st-k))
-                }
-
-                promesp <- mean(esp)
-                Ftx <- exp(-1*r*(Time_mature))*promesp #resultado final
-                return(Ftx)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
-        r_close_values = robjects.FloatVector(close_values)
-        put_call = r_f(volatilidad, r, k, Time_mature, r_close_values)
-
-        return float(put_call[0])
-
-
-    def europeanPut(self, volatilidad, r, k, Time_mature, close_values):
-        robjects.r("""
-            f <- function(volatilidad, r, k, Time_mature, close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling Put().\n")
-                }
-                s0 <- close_values[-1] #precio de la acción hoy
-
-                lensimula <- 1000 #numero simulaciones
-
-                generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
-
-                esp <- c()
-
-                #Generación de curvas S_t
-                for (i in 1:lensimula){
-                  st <- s0*exp((r - (1/2)*volatilidad^2)*(Time_mature) + volatilidad*generator[i]*sqrt(Time_mature))
-                  esp <- append(esp,max(0.0,k-st))
-                }
-
-                promesp <- mean(esp)
-                Ftx <- exp(-1*r*(Time_mature))*promesp #resultado final
-                return(Ftx)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
-        r_close_values = robjects.FloatVector(close_values)
-        put_sim = r_f(volatilidad, r, k, Time_mature, r_close_values)
-        return float(put_sim[0])
-
-
     def fvolatilidad(self, close_values):
-        robjects.r("""
-            f <- function(close_values, verbose=FALSE){
-                if(verbose) {
-                    cat("I am calling simulation().\n")
-                }
-                mu_values <- c()
-                for (i in 2:length(close_values)){
-                  mu_values <- append(mu_values, (log(close_values[i] / close_values[i-1])))
-                }
-
-                desviacion <- sd(mu_values)
-                tau <- 252  #Factor para Volatilidad anual
-                volatilidad <- desviacion * sqrt(tau)
-
-                return(volatilidad)
-            }
-        """)
-
-        r_f = robjects.r['f']
-
-        r_close_values = robjects.FloatVector(close_values)
-        ret = r_f(r_close_values)
+        ret = R.call("volatilidad")(R.vectorize(close_values))
 
         return float(ret[0])
-
-    def plot(self):
-        ''' plot some random stuff '''
-        data = [random.random() for i in range(25)]
-        ax = self.figure.add_subplot(111)
-        ax.hold(False)
-        ax.plot(data, '*-')
-        self.canvas.draw()
-
-
-
-class ControlMainWindow(QtGui.QMainWindow):
-    def __init__(self, parent=None):
-        super(ControlMainWindow, self).__init__(parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-              
-
-
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
