@@ -177,6 +177,19 @@
           </item>
          </layout>
         </item>
+        <item row="3" column="0" colspan="2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>637</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="2" column="1">
          <layout class="QFormLayout" name="formLayout_4">
           <property name="fieldGrowthPolicy">
@@ -209,19 +222,6 @@
            <widget class="QComboBox" name="business_type_combo"/>
           </item>
          </layout>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>637</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="4" column="0">
          <widget class="QRadioButton" name="radioButton">
@@ -275,19 +275,6 @@
           </item>
          </layout>
         </item>
-        <item row="5" column="1">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="styleSheet">
-           <string notr="true">color: white;
-  background-color: #27a9e3;
-  border-width: 0px;
-  border-radius: 3px;</string>
-          </property>
-          <property name="text">
-           <string>Subir archivo .csv</string>
-          </property>
-         </widget>
-        </item>
         <item row="6" column="0" colspan="2">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
@@ -300,6 +287,19 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="5" column="1">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="styleSheet">
+           <string notr="true">color: white;
+  background-color: #27a9e3;
+  border-width: 0px;
+  border-radius: 3px;</string>
+          </property>
+          <property name="text">
+           <string>Subir archivo .csv</string>
+          </property>
+         </widget>
         </item>
         <item row="7" column="0">
          <layout class="QFormLayout" name="formLayout_3">
@@ -360,6 +360,19 @@
           </item>
          </layout>
         </item>
+        <item row="7" column="1">
+         <widget class="QWidget" name="widget_bar" native="true">
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="error_line">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="Resultados">
@@ -412,7 +425,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <action name="actionInicio">

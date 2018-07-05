@@ -173,7 +173,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
     def result_function(self):
 
-    
 
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
@@ -195,8 +194,9 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         try:
             filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
         except:
-            self.result.setText("ERROR CARGA DATOS")
+            self.error_line.setText("Error, calcule nuevamente")
             return
+        
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
@@ -225,6 +225,8 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
        
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
+      
+
         #Inicializa llamada al servidor
         yf.pdr_override()
         data = pdr.get_data_yahoo(stock_symbol, start=start_date, end=finish_date,as_panel = False) #guarda data en dataframe
