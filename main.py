@@ -13,14 +13,21 @@ import pandas
 from pandas_datareader import data as pdr
 import fix_yahoo_finance as yf
 from math import *
-import rpy2.robjects.numpy2ri
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
-
+from matplotlib.figure import Figure
 import rwrapper
 import random
+
+import graficos
+
+import numpy as np
+
+
+from numpy import *
+import matplotlib.pyplot as plt
+
 
 qtCreatorFile = "sample3.ui" # Enter file here. #Interfaz hecha con QTDesigner
 R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
@@ -72,6 +79,7 @@ R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
 
 
 
+
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MyApp(QtGui.QMainWindow, Ui_MainWindow):
@@ -83,7 +91,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         
-        self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))  
+        self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))
+        
+
+
+  
     
 
         comboBox = self.business_type_combo
@@ -97,8 +109,67 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
 
+    def plot(self,volatilidad,Time_mature,k):
+        print ("aca")
+
+        # a figure instance to plot on
+        self.figure = Figure()
+
+        # this is the Canvas Widget that displays the `figure`
+        # it takes the `figure` instance as a parameter to __init__
+        self.canvas = FigureCanvas(self.figure)
+
+        # this is the Navigation widget
+        # it takes the Canvas widget and a parent
+        self.toolbar = NavigationToolbar(self.canvas, self)
+
+
+        # set the layout
+        layout = QtGui.QVBoxLayout(self.widget_graph)
+        layout.addWidget(self.toolbar)
+        layout.addWidget(self.canvas)
+        self.setLayout(layout)
+
+
+        # self.addButton = QtGui.QPushButton('button to add other widgets')
+
+        # self.mainLayout = QtGui.QVBoxLayout(self.widget_graph)
+
+        # self.mainLayout.addWidget(self.addButton)
+
+        data = cumprod(1+random.randn(1000,int(Time_mature*252))*(volatilidad/sqrt(int(Time_mature*252))),1)*k
+        print (data)
+        ax = self.figure.add_subplot(111)
+        ax.clear()
+        for i in data:
+            ax.plot(i, '*-')
+        self.canvas.draw()
+
+
+
+
+
+
+        # data = [random.random() for i in range(10)]
+
+        # # create an axis
+        # ax = self.figure.add_subplot(111)
+
+        # # discards the old graph
+        # ax.clear()
+
+        # # plot data
+        # ax.plot(data, '*-')
+
+        # # refresh canvas
+        # self.canvas.draw()
+
+
+
 
  
+        print ("alla")
+        self.show() 
 
     def result_function(self):
 
@@ -134,7 +205,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         if zone=="Europea":
             if option=="Compra":
-
                 option_func = "europeanCall"
             elif option=="Venta":
                 option_func = "europeanPut"
@@ -145,11 +215,13 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 option_func = "americanPut"
 
         #Esta linea llama la funcion y el resultado lo chanta en result
-        
+        print(close_values[-1])
         res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
-        self.result.setText('{0:0.6f}'.format(res_numerico))
+        self.result.setText('{0:0.6f}'.format(res_numerico)+" // v:"+ str(volatilidad))
+        print ("chanté el numero")
 
         self.stackedWidget.setCurrentIndex(2)
+        self.plot(volatilidad,Time_mature,k)
        
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):

@@ -2,13 +2,16 @@ europeanCall <- function(volatilidad, r, k, Time_mature, close_values, verbose=F
     if(verbose) {
         cat("I am calling Call().\n")
     }
-    s0 <- close_values[-1] #precio de la acción hoy
+    s0 <- tail(close_values, n=1) #precio de la acción hoy
+
 
     lensimula <- 1000 #numero simulaciones
 
     generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
 
-    esp <- c()                
+    esp <- c()
+
+              
 
     #Generación de curvas S_t
     for (i in 1:lensimula){
@@ -24,7 +27,7 @@ europeanPut <- function(volatilidad, r, k, Time_mature, close_values, verbose=FA
     if(verbose) {
         cat("I am calling Put().\n")
     }
-    s0 <- close_values[-1] #precio de la acción hoy
+    s0 <- tail(close_values, n=1) #precio de la acción hoy
 
     lensimula <- 1000 #numero simulaciones
 
