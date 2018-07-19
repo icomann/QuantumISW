@@ -6,19 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>673</width>
-    <height>461</height>
+    <width>876</width>
+    <height>445</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Valorizador de Opciones</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">background: rgba(32, 80, 96, 25);</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="0" column="0">
+     <widget class="QWidget" name="homeWidget" native="true">
+      <property name="styleSheet">
+       <string notr="true">background: rgba(32, 80, 96, 0);</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
        <number>0</number>
@@ -117,191 +124,14 @@
       </widget>
       <widget class="QWidget" name="Datos">
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0" colspan="2">
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>626</width>
-            <height>9</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Empresa</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Ajustes de Opción</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Nombre</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="business_name"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Símbolo</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="stock_name"/>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>637</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
-         <layout class="QFormLayout" name="formLayout_4">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Opción</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="Option_type"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Tipo de Opción</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="business_type_combo"/>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="0">
-         <widget class="QRadioButton" name="radioButton">
-          <property name="text">
-           <string>Descarga de Datos</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
+        <item row="4" column="2">
          <widget class="QRadioButton" name="radioButton_2">
           <property name="text">
            <string>Subida de Datos</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Fecha Inicio</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QDateEdit" name="start_date">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-            <property name="text">
-             <string>Fecha Término</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QDateEdit" name="finish_date">
-            <property name="styleSheet">
-             <string notr="true">background: rgba(32, 80, 96, 0);</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="6" column="0" colspan="2">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>637</width>
-            <height>12</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="1">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="styleSheet">
-           <string notr="true">color: white;
-  background-color: #27a9e3;
-  border-width: 0px;
-  border-radius: 3px;</string>
-          </property>
-          <property name="text">
-           <string>Subir archivo .csv</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
+        <item row="7" column="0" colspan="2">
          <layout class="QFormLayout" name="formLayout_3">
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -345,33 +175,203 @@
           <item row="2" column="1">
            <widget class="QLineEdit" name="k_value"/>
           </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="calculate_option">
-            <property name="styleSheet">
-             <string notr="true">color: white;
+         </layout>
+        </item>
+        <item row="7" column="2">
+         <widget class="QWidget" name="widget_bar" native="true">
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="calculate_option">
+             <property name="styleSheet">
+              <string notr="true">color: white;
   background-color: #27a9e3;
   border-width: 0px;
   border-radius: 3px;</string>
-            </property>
-            <property name="text">
-             <string>Calcular</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="7" column="1">
-         <widget class="QWidget" name="widget_bar" native="true">
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0">
-            <widget class="QLineEdit" name="error_line">
-             <property name="enabled">
-              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Calcular</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Fecha Inicio</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDateEdit" name="start_date">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Fecha Término</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="finish_date">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>Descarga de Datos</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Empresa</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="styleSheet">
+           <string notr="true">color: white;
+  background-color: #27a9e3;
+  border-width: 0px;
+  border-radius: 3px;</string>
+          </property>
+          <property name="text">
+           <string>Subir archivo .csv</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="3">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>637</width>
+            <height>12</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="2">
+         <layout class="QFormLayout" name="formLayout_4">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Opción</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="Option_type"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Tipo de Opción</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="business_type_combo"/>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Ajustes de Opción</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" rowspan="2" colspan="2">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>626</width>
+            <height>9</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="0" colspan="3">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>637</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Nombre</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="business_name"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="styleSheet">
+             <string notr="true">background: rgba(32, 80, 96, 0);</string>
+            </property>
+            <property name="text">
+             <string>Símbolo</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="stock_name"/>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -404,6 +404,26 @@
       </widget>
      </widget>
     </item>
+    <item row="0" column="2">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <widget class="QWidget" name="backWidget" native="true">
+      <property name="styleSheet">
+       <string notr="true">background: rgba(32, 80, 96, 0);</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -411,7 +431,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>673</width>
+     <width>876</width>
      <height>25</height>
     </rect>
    </property>

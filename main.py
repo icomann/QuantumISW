@@ -90,6 +90,26 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
+        self.homeButton = QtGui.QPushButton('', self)
+        self.homeButton.clicked.connect(self.goHome)
+
+        self.homeButton.setIcon(QtGui.QIcon('rsc/homeButton.png'))
+        self.homeButton.setIconSize(QtCore.QSize(18,18))
+        layout = QtGui.QVBoxLayout(self.homeWidget)
+        layout.addWidget(self.homeButton)
+
+
+        self.backButton = QtGui.QPushButton('', self)
+        self.backButton.clicked.connect(self.goBack)
+
+        self.backButton.setIcon(QtGui.QIcon('rsc/backButton.png'))
+        self.backButton.setIconSize(QtCore.QSize(18,18))
+        layout = QtGui.QVBoxLayout(self.backWidget)
+        layout.addWidget(self.backButton)
+
+
+
+        
         
         self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))
         
@@ -108,6 +128,37 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
+
+    def goHome(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def goBack(self):
+        current = self.stackedWidget.currentIndex()
+        
+        if current == 0:
+            self.stackedWidget.setCurrentIndex(0)
+
+        elif current== 2:
+            choice = QtGui.QMessageBox.question(self, "Abandonando resultados!", 
+                "Vas a perder tus resultados hasta el momento. ¿Ir atrás?", QtGui.QMessageBox.Yes | 
+                QtGui.QMessageBox.No)
+            if choice == QtGui.QMessageBox.No:
+                pass
+            else:
+                self.stackedWidget.setCurrentIndex(current-1)
+
+        else:
+            self.stackedWidget.setCurrentIndex(current-1)
+
+    def isCalculating(self, status):
+        if status == "error":
+            errorDialog = QtGui.QMessageBox.question(self, "Error de conexión!", 
+                "No podemos obtener su información en estos momentos. Intente más tarde", QtGui.QMessageBox.Ok)
+            return
+        else:
+            successDialog = QtGui.QMessageBox.question(self, "Datos Ok!", "Apreta Ok para conocer los resultados", QtGui.QMessageBox.Ok)
+            return
+
 
     def plot(self,volatilidad,Time_mature,k):
         print ("aca")
@@ -190,13 +241,16 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         r = float(self.r_value.text()) #get r
 
-
         try:
             filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
+            print("mira mamá")
+            self.isCalculating("success")
         except:
-            self.error_line.setText("Error, calcule nuevamente")
+            self.isCalculating("error")
             return
         
+        
+
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
 
@@ -215,6 +269,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 option_func = "americanPut"
 
         #Esta linea llama la funcion y el resultado lo chanta en result
+
         print(close_values[-1])
         res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
         self.result.setText('{0:0.6f}'.format(res_numerico)+" // v:"+ str(volatilidad))
@@ -235,6 +290,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         archivo = open(filename, 'w')
         archivo.write(data.to_csv())
         archivo.close()
+        print("retorno")
         return filename #retorno el path del archivo
 
     def read_csv(self,file): #funcion que retorna una lista con los datos Close del CSV
