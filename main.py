@@ -90,11 +90,13 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
+
+        #codigo para botones inicio y back
         self.homeButton = QtGui.QPushButton('', self)
         self.homeButton.clicked.connect(self.goHome)
 
         self.homeButton.setIcon(QtGui.QIcon('rsc/homeButton.png'))
-        self.homeButton.setIconSize(QtCore.QSize(18,18))
+        self.homeButton.setIconSize(QtCore.QSize(15,15))
         layout = QtGui.QVBoxLayout(self.homeWidget)
         layout.addWidget(self.homeButton)
 
@@ -103,14 +105,14 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.backButton.clicked.connect(self.goBack)
 
         self.backButton.setIcon(QtGui.QIcon('rsc/backButton.png'))
-        self.backButton.setIconSize(QtCore.QSize(18,18))
+        self.backButton.setIconSize(QtCore.QSize(15,15))
         layout = QtGui.QVBoxLayout(self.backWidget)
         layout.addWidget(self.backButton)
 
 
 
         
-        
+        #al apretar comenzar
         self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))
         
 
