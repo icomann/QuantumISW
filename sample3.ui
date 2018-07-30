@@ -464,6 +464,23 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>start_button</tabstop>
+  <tabstop>business_name</tabstop>
+  <tabstop>stock_name</tabstop>
+  <tabstop>Option_type</tabstop>
+  <tabstop>business_type_combo</tabstop>
+  <tabstop>radioButton</tabstop>
+  <tabstop>radioButton_2</tabstop>
+  <tabstop>start_date</tabstop>
+  <tabstop>finish_date</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>Time_mature_name</tabstop>
+  <tabstop>r_value</tabstop>
+  <tabstop>k_value</tabstop>
+  <tabstop>calculate_option</tabstop>
+  <tabstop>result</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

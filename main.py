@@ -5,7 +5,7 @@ import shutil
 
 from PyQt4 import QtGui, QtCore, uic
 
-
+import requests
 
 import rpy2.robjects as robjects
 import numpy
@@ -84,6 +84,8 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
+    
+
     def __init__(self):
         #Todo lo necesario para la inicializacion
         QtGui.QMainWindow.__init__(self)
@@ -110,15 +112,14 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         layout.addWidget(self.backButton)
 
 
-
-        
         #al apretar comenzar
         self.start_button.clicked.connect(lambda : self.stackedWidget.setCurrentIndex(1))
         
+        #al apretar subir archivo
+        self.radioButton_2.toggled.connect(lambda:self.check_button())
 
-
-  
-    
+        #nombre del path del archivos
+        self.uploaded_filename = ''
 
         comboBox = self.business_type_combo
         comboBox.addItem(QtGui.QIcon("rsc/call.png"),"Compra")
@@ -127,9 +128,72 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         comboBoxType = self.Option_type
         comboBoxType.addItem(QtGui.QIcon("rsc/american_option.png"),"Americana")
         comboBoxType.addItem(QtGui.QIcon("rsc/european_option.png"),"Europea")
+
+        regex = QtCore.QRegExp("^(?=.+)(?:[1-9]\d*)?(?:\d\.(0*[1-9]+)+)?$")
+        #regex_2 = QtCore.QRegExp(self.yahoo_check_symbol)
+
+        validator = QtGui.QRegExpValidator(regex, self)
+        #symbol_validator = QtGui.QRegExpValidator(regex_2, self)
+
         
+
+        #self.stock_name.setValidator(symbol_validator)
+        self.Time_mature_name.setValidator(validator)
+        self.k_value.setValidator(validator)
+        self.r_value.setValidator(validator)
+
+        #self.stock_name.textChanged.connect(self.check_state)
+        #self.stock_name.textChanged.emit(self.stock_name.text())
+
+        self.Time_mature_name.textChanged.connect(self.check_state)
+        self.Time_mature_name.textChanged.emit(self.Time_mature_name.text())
+
+        self.k_value.textChanged.connect(self.check_state)
+        self.k_value.textChanged.emit(self.k_value.text())
+
+        self.r_value.textChanged.connect(self.check_state)
+        self.r_value.textChanged.emit(self.r_value.text())
+
+        
+         
+
         #Lanzador para el boton Calcular, llama a result_function
         self.calculate_option.clicked.connect(self.result_function)
+
+    def check_button(self):
+        if self.radioButton_2.isChecked() == True:
+            print("subir")
+            self.connect(self.pushButton_2, QtCore.SIGNAL('clicked()'), self.open_file)
+            
+
+    def open_file(self):
+        #filename = os.path.basename(filepath)
+        if self.radioButton_2.isChecked() == True:
+            self.disconnect(self.pushButton_2, QtCore.SIGNAL('clicked()'), self.open_file)
+            self.uploaded_filename += QtGui.QFileDialog.getOpenFileName(self, 'Open File', '.')
+            print(self.uploaded_filename)
+            return self.uploaded_filename
+        
+
+
+    def check_state(self, *args, **kwargs):
+        sender = self.sender()
+        validator = sender.validator()
+        state = validator.validate(sender.text(), 0)[0]
+        if state == QtGui.QValidator.Acceptable:
+            color = '#c4df9b' # green
+        else:
+            color = '#f03e2d' # red
+        sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
+
+
+
+    # def yahoo_check_symbol(self):
+    #     archivo = open('Symbols', 'r')    
+    #     for symbols in archivo:
+    #         return symbols.strip()
+
+
 
     def goHome(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -200,9 +264,6 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
 
 
-
-
-
         # data = [random.random() for i in range(10)]
 
         # # create an axis
@@ -218,14 +279,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         # self.canvas.draw()
 
 
-
-
- 
         print ("alla")
         self.show() 
 
     def result_function(self):
-
 
         option = self.business_type_combo.currentText()
         zone = self.Option_type.currentText()
@@ -237,21 +294,23 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         temp_var2 = self.finish_date.date() #get finish date
         finish_date = (temp_var2.toPyDate()).strftime("%Y-%m-%d") #formato finish date
 
+        if self.radioButton_2.isChecked() == True:
+            filename = self.uploaded_filename 
+        
+        else:
+            try:
+                filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
+                print("mira mam")
+                self.isCalculating("success")
+            except:
+                self.isCalculating("error")
+                return
+
         Time_mature = float(self.Time_mature_name.text()) #tiempo de madurez
 
         k = float(self.k_value.text()) #get k
 
         r = float(self.r_value.text()) #get r
-
-        try:
-            filename = self.import_data_from_server(stock_symbol,start_date,finish_date) #llama a la importacion desde el servidor
-            print("mira mamá")
-            self.isCalculating("success")
-        except:
-            self.isCalculating("error")
-            return
-        
-        
 
         close_values = self.read_csv(filename) #leo el csv y guardo los datos Close en una lista
         #close_values =[20.0, 20.1, 19.9, 20.0, 20.5, 20.25, 20.9, 20.9, 20.9,  20.75, 20.75, 21.0, 21.1, 20.9, 20.9, 21.25, 21.4, 21.4, 21.25, 21.75, 22.0]
@@ -277,22 +336,38 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.result.setText('{0:0.6f}'.format(res_numerico)+" // v:"+ str(volatilidad))
         print ("chanté el numero")
 
+        
         self.stackedWidget.setCurrentIndex(2)
-        self.plot(volatilidad,Time_mature,k)
+        if zone=="Europea":
+            self.plot(volatilidad,Time_mature,k)
        
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
-      
 
-        #Inicializa llamada al servidor
-        yf.pdr_override()
-        data = pdr.get_data_yahoo(stock_symbol, start=start_date, end=finish_date,as_panel = False) #guarda data en dataframe
-        #Guardo los datos en un csv
+        directory = os.path.dirname('/historical_data')
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+      
+        
         filename = 'historical_data/' +stock_symbol+'_'+start_date+'_'+finish_date+'.txt'
-        archivo = open(filename, 'w')
-        archivo.write(data.to_csv())
-        archivo.close()
-        print("retorno")
+        
+        if not os.path.exists(filename):
+
+            #Inicializa llamada al servidor
+            yf.pdr_override()
+            data = pdr.get_data_yahoo(stock_symbol, start=start_date, end=finish_date,as_panel = False) #guarda data en dataframe
+           
+            
+            print("EEEEERRR")
+            #Guardo los datos en un csv
+            archivo = open(filename, 'w')
+            print("EEEEERRR222")
+            
+            archivo.write(data.to_csv())
+            archivo.close()
+            print("retorno")
+        
         return filename #retorno el path del archivo
 
     def read_csv(self,file): #funcion que retorna una lista con los datos Close del CSV

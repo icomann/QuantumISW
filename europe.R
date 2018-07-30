@@ -5,7 +5,7 @@ europeanCall <- function(volatilidad, r, k, Time_mature, close_values, verbose=F
     s0 <- tail(close_values, n=1) #precio de la acción hoy
 
 
-    lensimula <- 500 #numero simulaciones
+    lensimula <- 1000 #numero simulaciones
 
     generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
 
@@ -29,7 +29,7 @@ europeanPut <- function(volatilidad, r, k, Time_mature, close_values, verbose=FA
     }
     s0 <- tail(close_values, n=1) #precio de la acción hoy
 
-    lensimula <- 500 #numero simulaciones
+    lensimula <- 1000 #numero simulaciones
 
     generator <- rnorm(lensimula, mean = 0, sd = 1) #Genera lista con numeros aleatorios usando distribucion normal
 
