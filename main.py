@@ -77,8 +77,14 @@ R = rwrapper.RWrapper("europe.R", "vol.R", "murica.R")
 # if __name__ == '__main__':
 # 	window()
 
-
-
+#No exactamente, pero cerquita
+def percentile(n, data):
+    percentiles = list()
+    index = int(len(data)*n/100.0)
+    for i in xrange(len(data[0])):
+        newdata = sorted([subdata[i] for subdata in data])
+        percentiles.append(newdata[index])
+    return percentiles
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
@@ -258,8 +264,14 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         print (data)
         ax = self.figure.add_subplot(111)
         ax.clear()
-        for i in data:
-            ax.plot(i, '*-')
+        avg = [sum([subdata[j] for subdata in data])/len(data) for j in xrange(len(data[0]))]
+        perc95 = percentile(95, data)
+        perc5 = percentile(5, data)
+        ax.plot(perc95, 'k- -')
+        ax.plot(perc5, 'k- -')
+        ax.plot(avg, 'r-')
+        #for i in data:
+        #    ax.plot(i, '*-')
         self.canvas.draw()
 
 
@@ -282,11 +294,19 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         print ("alla")
         self.show() 
 
+    def option_func(self):
+        if self.Option_type.currentText()=="Europea":
+            if self.business_type_combo.currentText()=="Compra":
+                return "europeanCall"
+            else:
+                return "europeanPut"
+        else:
+            if self.business_type_combo.currentText()=="Compra":
+                return "americanCall"
+            else:
+                return "americanPut"
+
     def result_function(self):
-
-        option = self.business_type_combo.currentText()
-        zone = self.Option_type.currentText()
-
         stock_symbol = self.stock_name.text() #get symbol
 
         temp_var = self.start_date.date() #get start date
@@ -317,22 +337,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         volatilidad = self.fvolatilidad(close_values) #calculo volatilidad
         #volatilidad = 0.2
-        
-        if zone=="Europea":
-            if option=="Compra":
-                option_func = "europeanCall"
-            elif option=="Venta":
-                option_func = "europeanPut"
-        elif zone=="Americana":
-            if option=="Compra":
-                option_func = "americanCall"
-            elif option=="Venta":
-                option_func = "americanPut"
 
         #Esta linea llama la funcion y el resultado lo chanta en result
 
         print(close_values[-1])
-        res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
+        res_numerico = R.call(self.option_func())(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
         self.result.setText('{0:0.6f}'.format(res_numerico)+" // v:"+ str(volatilidad))
         print ("chanté el numero")
 
