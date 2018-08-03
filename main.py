@@ -212,6 +212,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
                 pass
             else:
                 self.stackedWidget.setCurrentIndex(current-1)
+                
 
         else:
             self.stackedWidget.setCurrentIndex(current-1)
@@ -253,14 +254,18 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         # self.mainLayout = QtGui.QVBoxLayout(self.widget_graph)
 
         # self.mainLayout.addWidget(self.addButton)
-
-        data = cumprod(1+random.randn(1000,int(Time_mature*252))*(volatilidad/sqrt(int(Time_mature*252))),1)*k
+        print("time_mature "+str(Time_mature))
+        data = cumprod(1+random.randn(1000,int(252*Time_mature))*(volatilidad/sqrt(int(252))),1)*k
+        #data = cumprod(1+random.randn(1000,int(Time_mature*252))*volatilidad/sqrt(int(Time_mature*252)),1)*k
         print (data)
+        print(len(data[0]))
+        print("we")
         ax = self.figure.add_subplot(111)
         ax.clear()
         for i in data:
             ax.plot(i, '*-')
         self.canvas.draw()
+
 
 
 
@@ -280,7 +285,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
 
         print ("alla")
-        self.show() 
+        self.show()
 
     def result_function(self):
 
@@ -333,7 +338,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         print(close_values[-1])
         res_numerico = R.call(option_func)(volatilidad, r, k, Time_mature, R.vectorize(close_values))[0]
-        self.result.setText('{0:0.6f}'.format(res_numerico)+" // v:"+ str(volatilidad))
+        self.result.setText('{0:0.6f}'.format(res_numerico))
         print ("chanté el numero")
 
         
@@ -344,10 +349,9 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
     def import_data_from_server(self,stock_symbol,start_date,finish_date):
 
-        directory = os.path.dirname('/historical_data')
-
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        directory = os.getcwd()
+        if not os.path.exists(directory+"/historical_data"):
+            os.makedirs("historical_data")
       
         
         filename = 'historical_data/' +stock_symbol+'_'+start_date+'_'+finish_date+'.txt'
